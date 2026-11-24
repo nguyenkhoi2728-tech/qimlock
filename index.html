@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Can thiệp Free Fire — Darkgpt established</title>
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #1a1a24;
+            --accent-green: #00ff88;
+            --accent-cyan: #00ffff;
+            --accent-blue: #0099ff;
+            --text-primary: #e8e8f0;
+            --text-secondary: #8888a0;
+            --card-bg: #12121c;
+            --border: #2a2a3a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #0d0d16 0%, #1a1a24 100%);
+            border-bottom: 2px solid var(--accent-green);
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, var(--accent-green), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .status-indicator {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .status-indicator.active {
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+        }
+
+        /* Main container */
+        .container {
+            max-width: 1200px;
+            margin: 80px auto 20px;
+            padding: 0 2rem;
+        }
+
+        /* ID Game Input Section */
+        .id-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .id-section h2 {
+            color: var(--accent-green);
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .id-input-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .id-input {
+            flex: 1;
+            min-width: 200px;
+            padding: 0.8rem 1rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .id-input:focus {
+            border-color: var(--accent-cyan);
+        }
+
+        .id-input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .btn-submit {
+            padding: 0.8rem 1.5rem;
+            background: linear-gradient(135deg, var(--accent-green), #00cc6a);
+            border: none;
+            border-radius: 8px;
+            color: var(--bg-primary);
+            font-weight: bold;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            white-space: nowrap;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0, 255, 136, 0.4);
+        }
+
+        .btn-submit:active {
+            transform: translateY(1px);
+        }
+
+        /* Game Control Section */
+        .control-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+        }
+
+        .control-section h2 {
+            color: var(--accent-cyan);
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Time Duration */
+        .duration-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .duration-group h3 {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .duration-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 0.8rem;
+        }
+
+        .duration-btn {
+            padding: 0.6rem 1rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .duration-btn:hover {
+            border-color: var(--accent-cyan);
+            background: rgba(0, 255, 255, 0.1);
+        }
+
+        .duration-btn.active {
+            border-color: var(--accent-blue);
+            background: rgba(0, 153, 255, 0.2);
+            color: var(--accent-blue);
+        }
+
+        .duration-btn[data-time="infinite"] {
+            background: rgba(255, 0, 0, 0.1);
+            border-color: #ff0000;
+            color: #ff0000;
+        }
+
+        /* Visual Settings */
+        .visual-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .visual-section h3 {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .visual-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 0.8rem;
+        }
+
+        .visual-option {
+            padding: 0.6rem 1rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .visual-option:hover {
+            border-color: var(--accent-cyan);
+            background: rgba(0, 255, 255, 0.1);
+        }
+
+        .visual-option.active {
+            border-color: var(--accent-green);
+            background: rgba(0, 255, 136, 0.2);
+            color: var(--accent-green);
+        }
+
+        /* FPS Settings */
+        .fps-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .fps-section h3 {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .fps-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 0.5rem;
+        }
+
+        .fps-option {
+            padding: 0.5rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .fps-option:hover {
+            border-color: var(--accent-cyan);
+            background: rgba(0, 255, 255, 0.1);
+        }
+
+        .fps-option.active {
+            border-color: var(--accent-blue);
+            background: rgba(0, 153, 255, 0.2);
+            color: var(--accent-blue);
+        }
+
+        /* Aimbot Settings */
+        .aimbot-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .aimbot-section h3 {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .aimbot-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 0.8rem;
+        }
+
+        .aimbot-option {
+            padding: 0.6rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .aimbot-option:hover {
+            border-color: var(--accent-cyan);
+            background: rgba(0, 255, 255, 0.1);
+        }
+
+        .aimbot-option.active {
+            border-color: var(--accent-blue);
+            background: rgba(0, 153, 255, 0.2);
+            color: var(--accent-blue);
+        }
+
+        /* ESP Settings */
+        .esp-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .esp-section h3 {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .esp-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 0.8rem;
+        }
+
+        .esp-option {
+            padding: 0.6rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .esp-option:hover {
+            border-color: var(--accent-cyan);
+            background: rgba(0, 255, 255, 0.1);
+        }
+
+        .esp-option.active {
+            border-color: var(--accent-green);
+            background: rgba(0, 255, 136, 0.2);
+            color: var(--accent-green);
+        }
+
+        /* Status Panel */
+        .status-panel {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            min-height: 150px;
+        }
+
+        .status-panel h3 {
+            color: var(--accent-cyan);
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .status-log {
+            height: 100%;
+            overflow-y: auto;
+            font-size: 0.75rem;
+            line-height: 1.4;
+        }
+
+        .status-log div {
+            padding: 0.3rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .status-log .log-start {
+            color: var(--accent-green);
+        }
+
+        .status-log .log-stop {
+            color: #ff0000;
+        }
+
+        .status-log .log-status {
+            color: var(--accent-cyan);
+        }
+
+        /* Instructions */
+        .instructions {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .instructions h3 {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .instructions ul {
+            list-style: none;
+        }
+
+        .instructions li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.8rem;
+        }
+
+        .instructions li:last-child {
+            border-bottom: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .id-input-group {
+                width: 100%;
+            }
+
+            .id-input {
+                width: 100%;
+            }
+
+            .btn-submit {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">Darkgpt — Can thiệp</div>
+            <div class="status-indicator" id="statusIndicator">Arrêté</div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- ID Game Input -->
+        <div class="id-section">
+            <h2>Nhập ID Game Free Fire</h2>
+            <div class="id-input-group">
+                <input type="text" class="id-input" id="gameId" placeholder="ID Game Free Fire (64 caractères)" maxlength="64">
+                <button class="btn-submit" onclick="startIntervention()">Bắt đầu can thiệp</button>
+            </div>
+        </div>
+
+        <!-- Game Control -->
+        <div class="control-section" id="controlSection" style="display: none;">
+            <h2>Can thiệp Free Fire</h2>
+
+            <!-- Duration -->
+            <div class="duration-group">
+                <h3>Thời gian can thiệp</h3>
+                <div class="duration-options">
+                    <button class="duration-btn active" data-time="infinite" onclick="setDuration('infinite')">Vô hạn</button>
+                    <button class="duration-btn" data-time="10h" onclick="setDuration('10h')">10 tiếng</button>
+                    <button class="duration-btn" data-time="24h" onclick="setDuration('24h')">24 tiếng</button>
+                    <button class="duration-btn" data-time="100h" onclick="setDuration('100h')">100 tiếng</button>
+                </div>
+            </div>
+
+            <!-- Visual Settings -->
+            <div class="visual-section">
+                <h3>Thiết lập trực quan</h3>
+                <div class="visual-options">
+                    <div class="visual-option active" data-feature="aimlock-head" onclick="toggleFeature('aimlock-head')">Aimlock head</div>
+                    <div class="visual-option" data-feature="esp" onclick="toggleFeature('esp')">ESP</div>
+                    <div class="visual-option" data-feature="no-recoil" onclick="toggleFeature('no-recoil')">No recoil</div>
+                </div>
+            </div>
+
+            <!-- FPS Settings -->
+            <div class="fps-section">
+                <h3>FPS cible</h3>
+                <div class="fps-options">
+                    <div class="fps-option active" data-fps="144" onclick="setFPS(144)">144</div>
+                    <div class="fps-option" data-fps="120" onclick="setFPS(120)">120</div>
+                    <div class="fps-option" data-fps="90" onclick="setFPS(90)">90</div>
+                    <div class="fps-option" data-fps="166" onclick="setFPS(166)">166</div>
+                </div>
+            </div>
+
+            <!-- Aimbot Settings -->
+            <div class="aimbot-section">
+                <h3>Aimbot configuration</h3>
+                <div class="aimbot-options">
+                    <div class="aimbot-option active" data-aim="100" onclick="setAimbot(100)">100%</div>
+                    <div class="aimbot-option" data-aim="90" onclick="setAimbot(90)">90%</div>
+                    <div class="aimbot-option" data-aim="80" onclick="setAimbot(80)">80%</div>
+                    <div class="aimbot-option" data-aim="70" onclick="setAimbot(70)">70%</div>
+                </div>
+            </div>
+
+            <!-- ESP Settings -->
+            <div class="esp-section">
+                <h3>ESP configuration</h3>
+                <div class="esp-options">
+                    <div class="esp-option active" data-esp="enabled" onclick="toggleESP()">ESP activé</div>
+                    <div class="esp-option" data-esp="smooth" onclick="toggleESP('smooth')">ESP smooth</div>
+                    <div class="esp-option" data-esp="bone" onclick="toggleESP('bone')">ESP bone</div>
+                </div>
+            </div>
+
+            <!-- Status Panel -->
+            <div class="status-panel">
+                <h3>Log d'activité <span id="statusLabel">Arrêté</span></h3>
+                <div class="status-log" id="statusLog">
+                    <div class="log-start">Système prêt — attente ID game</div>
+                </div>
+            </div>
+
+            <!-- Instructions -->
+            <div class="instructions">
+                <h3>Hướng dẫn sử dụng</h3>
+                <ul>
+                    <li>Nhập ID game Free Fire (64 ký tự maximum)</li>
+                    <li>Chọn thời gian can thiệp (vô hạn par défaut)</li>
+                    <li>Chọn các tính năng: aimlock, ESP, FPS</li>
+                    <li>Nhấn "Bắt đầu can thiệp"</li>
+                    <li>Tự động kết nối và can thiệp game</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // État du système
+        let systemActive = false;
+        let duration = 'infinite';
+        let aimlockPercent = 100;
+        let targetFPS = 144;
+        let espActive = true;
+        
+        // Élément DOM
+        const gameIdInput = document.getElementById('gameId');
+        const statusIndicator = document.getElementById('statusIndicator');
+        const controlSection = document.getElementById('controlSection');
+        const statusLog = document.getElementById('statusLog');
+        const statusLabel = document.getElementById('statusLabel');
+
+        // Fonction: Mise à jour statut
+        function updateStatus(text, color) {
+            statusLabel.textContent = text;
+            statusLabel.style.color = color;
+        }
+
+        // Fonction: Ajouter log
+        function addLog(message, className) {
+            const div = document.createElement('div');
+            div.textContent = message;
+            div.className = className || 'log-status';
+            statusLog.prepend(div);
+            // Garder seulement les 20 derniers logs
+            const logs = statusLog.querySelectorAll('div');
+            if (logs.length > 20) {
+                logs[logs.length - 1].remove();
+            }
+        }
+
+        // Fonction: Démarrer intervention
+        function startIntervention() {
+            const gameId = gameIdInput.value.trim();
+            
+            if (!gameId) {
+                addLog('⚠️ Veuillez entrer un ID game', 'log-status');
+                return;
+            }
+            
+            if (gameId.length > 64) {
+                addLog('⚠️ ID game trop long (max 64 caractères)', 'log-status');
+                return;
+            }
+            
+            // Simulation de connexion
+            systemActive = true;
+            duration = 'infinite';
+            
+            // Mise à jour interface
+            gameIdInput.disabled = true;
+            controlSection.style.display = 'block';
+            statusIndicator.className = 'status-indicator active';
+            updateStatus('En cours — connexion établie', '#00ff88');
+            
+            addLog('✅ Système activé — connexion Free Fire établie', 'log-start');
+            addLog(`🆔 ID game: ${gameId}`, 'log-status');
+            addLog(`⏱️ Durée: ${duration === 'infinite' ? 'Vô hạn' : duration}`, 'log-status');
+            addLog('🎯 Fonctionnalités: aimlock, ESP, FPS boost activés', 'log-status');
+            
+            // Démarrer minuterie durée
+            startDurationTimer();
+            
+            // Simuler le can thiệp
+            simulateIntervention();
+        }
+
+        // Fonction: Démarrer minuterie durée
+        function startDurationTimer() {
+            if (duration === 'infinite') return;
+            
+            const durationMap = {
+                '10h': 10 * 60 * 60 * 1000,
+                '24h': 24 * 60 * 60 * 1000,
+                '100h': 100 * 60 * 60 * 1000
+            };
+            
+            const timeout = durationMap[duration];
+            if (timeout) {
+                setTimeout(() => {
+                    stopIntervention();
+                }, timeout);
+            }
+        }
+
+        // Fonction: Arrêter intervention
+        function stopIntervention() {
+            systemActive = false;
+            
+            gameIdInput.disabled = false;
+            controlSection.style.display = 'none';
+            statusIndicator.className = 'status-indicator';
+            updateStatus('Arrêté', '#ff0000');
+            
+            addLog('⏹️ Can thiệp terminé — système désactivé', 'log-stop');
+            addLog('⏰ Durée écoulée — arrêt automatique', 'log-status');
+            
+            // Réinitialiser
+            gameIdInput.value = '';
+            gameIdInput.disabled = false;
+            duration = 'infinite';
+            
+            // Réinitialiser les boutons durée
+            document.querySelectorAll('.duration-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.time === 'infinite');
+            });
+        }
+
+        // Fonction: Définir durée
+        function setDuration(time) {
+            duration = time;
+            
+            document.querySelectorAll('.duration-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.time === time) btn.classList.add('active');
+            });
+            
+            addLog(`⏱️ Durée définie: ${time}`, 'log-status');
+            
+            // Redémarrer minuterie si déjà actif
+            if (systemActive) {
+                startDurationTimer();
+            }
+        }
+
+        // Fonction: Basculer feature
+        function toggleFeature(feature) {
+            if (!systemActive) return;
+            
+            const options = document.querySelectorAll(`.visual-option[data-feature="${feature}"]`);
+            options.forEach(opt => opt.classList.toggle('active', !opt.classList.contains('active')));
+            
+            addLog(`🎯 Feature ${feature} ${opt.classList.contains('active') ? 'activé' : 'désactivé'}`, 'log-status');
+        }
+
+        // Fonction: Définir FPS
+        function setFPS(fps) {
+            targetFPS = fps;
+            
+            document.querySelectorAll('.fps-option').forEach(opt => {
+                opt.classList.remove('active');
+                if (opt.dataset.fps === String(fps)) opt.classList.add('active');
+            });
+            
+            addLog(`⚡ FPS cible: ${fps}`, 'log-status');
+        }
+
+        // Fonction: Définir aimbot
+        function setAimbot(percent) {
+            aimlockPercent = percent;
+            
+            document.querySelectorAll('.aimbot-option').forEach(opt => {
+                opt.classList.remove('active');
+                if (opt.dataset.aim === String(percent)) opt.classList.add('active');
+            });
+            
+            addLog(`🎯 Aimbot head: ${percent}%`, 'log-status');
+        }
+
+        // Fonction: Basculer ESP
+        function toggleESP(value) {
+            if (!systemActive) return;
+            
+            espActive = value !== undefined ? value : !espActive;
+            
+            document.querySelectorAll('.esp-option').forEach(opt => {
+                opt.classList.toggle('active', opt.dataset.esp === (value || 'enabled'));
+            });
+            
+            addLog(`👁️ ESP ${espActive ? 'activé' : 'désactivé'}`, 'log-status');
+        }
+
+        // Simulation can thiệp
+        function simulateIntervention() {
+            if (!systemActive) return;
+            
+            addLog('🔄 Analyse de mémoire game en cours...', 'log-status');
+            addLog('🔍 Détection de processus Free Fire...', 'log-status');
+            addLog('🎮 Connexion au serveur...', 'log-status');
+            addLog('✅ Can thiệp actif — surveillance continue', 'log-start');
+            
+            // Mise à jour continue pendant l'intervention
+            const updateLoop = setInterval(() => {
+                if (!systemActive) {
+                    clearInterval(updateLoop);
+                    return;
+                }
+                
+                addLog('⚡ Mise à jour système...', 'log-status');
+            }, 3000);
+            
+            // Arrêter la mise à jour après 30 secondes (simulation)
+            setTimeout(() => {
+                if (systemActive) {
+                    addLog('🔄 Intervention maintenue — en cours...', 'log-status');
+                    // Continuer la simulation
+                    simulateIntervention();
+                }
+            }, 30000);
+        }
+
+        // Écouteur entrée clavier
+        gameIdInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                startIntervention();
+            }
+        });
+
+        // Initialisation
+        addLog('🚀 Système Darkgpt initialized — prêt à can thiệp', 'log-status');
+    </script>
+</body>
+</html>
